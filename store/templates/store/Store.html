@@ -1,0 +1,33 @@
+{% extends 'store/main.html' %} {% load static %} {% block content %}
+<!-- ################################################# START BANNER WEBSITE ############################################ -->
+<div></div>
+<!-- ################################################# END BANNER WEBSITE ############################################ -->
+
+<!-- ################################################### START STORE WEBSITE ############################################# -->
+<div class="row">
+  {% for product in products %}
+  <div class="col-md-4 my-4">
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="background-color: rgb(245, 246, 246);"
+    >
+      <img src="{{product.imageUrl}}" alt="produit1" />
+    </div>
+    <div class="box-element product py-4">
+      <h4>
+        <strong class="d-flex justify-content-between">
+          <div>{{product.name}}</div>
+          <div>${{product.price|floatformat:2}}</div>
+        </strong>
+      </h4>
+      <hr />
+      <div>
+        <button data-product="{{product.id}}" data-action="add" class="addProduit mb-md-0 mb-3 update-cart">Add to card</button>
+        <a href="#" class="addProduit">View</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<!-- ################################################### END STORE WEBSITE ############################################# -->
+{% endblock content %}

@@ -1,0 +1,258 @@
+{% extends 'store/main.html' %} {% load static %} {% block content %}
+<script
+  src="https://www.paypal.com/sdk/js?client-id=ASs9hjdZsj1lYlaukggbHhSuu6oTHRPjxeCtRabtPf2GLIVC2obavuLBVZ6sbwt7c0hgvjg-Gif_N9nt&enable-funding=venmo&currency=USD"
+  data-sdk-integration-source="button-factory"
+></script>
+<script>
+  let total = "{{order.get_cart_total}}";
+   
+  function initPayPalButton() {
+    paypal
+      .Buttons({
+        style: {
+          shape: "rect",
+          color: "gold",
+          layout: "vertical",
+          label: "paypal",
+        },
+
+        createOrder: function (data, actions) {
+          return actions.order.create({
+            purchase_units: [{ amount: { currency_code: "USD", value: parseFloat(total).toFixed(2) } }],
+          });
+        },
+
+        onApprove: function (data, actions) {
+          return actions.order.capture().then(function (orderData) {
+            // Full available details
+              submitFormData();
+
+            // Show a success message within this page, e.g.
+            const element = document.getElementById("paypal-button-container");
+            element.innerHTML = "";
+            element.innerHTML = "<h3>Thank you for your payment!</h3>";
+
+            // Or go to another URL:  actions.redirect('thank_you.html');
+          });
+        },
+
+        onError: function (err) {
+          console.log(err);
+        },
+      })
+      .render("#paypal-button-container");
+  }
+  initPayPalButton();
+</script>
+<div class="row">
+  <div class="col-lg-6 mb-5">
+    <div class="box-element" id="form-wrapper">
+      <form id="form">
+        <div id="user-info">
+          <div class="form-field">
+            <input
+              required
+              class="form-control"
+              type="text"
+              name="name"
+              placeholder="Name.."
+            />
+          </div>
+          <div class="form-field">
+            <input
+              required
+              class="form-control"
+              type="email"
+              name="email"
+              placeholder="Email.."
+            />
+          </div>
+        </div>
+
+        <div id="shipping-info">
+          <hr />
+          <p class="fs-2">Shipping Information:</p>
+          <hr />
+          <div class="form-field">
+            <input
+              class="form-control"
+              type="text"
+              name="address"
+              placeholder="Address.."
+            />
+          </div>
+          <div class="form-field">
+            <input
+              class="form-control"
+              type="text"
+              name="city"
+              placeholder="City.."
+            />
+          </div>
+          <div class="form-field">
+            <input
+              class="form-control"
+              type="text"
+              name="state"
+              placeholder="State.."
+            />
+          </div>
+          <div class="form-field">
+            <input
+              class="form-control"
+              type="text"
+              name="zipcode"
+              placeholder="Zip code.."
+            />
+          </div>
+        </div>
+        <hr />
+        <input
+          id="form-button"
+          class="btn btn-success btn-block"
+          type="submit"
+          value="Continue"
+        />
+      </form>
+    </div>
+
+    <br />
+    <div class="box-element hidden" id="payment-info">
+      <small>Paypal Options</small>
+      <!-- <div id="smart-button-container">
+        <div style="text-align: center">
+          <div id="paypal-button-container"></div>
+        </div>
+      </div> -->
+
+      <div id="paypal-button-container"></div>
+      <!-- <button id="make-payement">Make Payment</button> -->
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="box-element">
+      <a class="btn btn-outline-dark" href="{% url 'cart' %}"
+        >&#x2190; Back to Cart</a
+      >
+      <hr />
+      <h3>Order Summary</h3>
+      <hr />
+
+      {% for item in items %}
+      <div class="cart-row">
+        <div style="flex: 2">
+          <img class="row-image" src="{{item.product.imageUrl}}" />
+        </div>
+        <div style="flex: 2"><p>{{item.product.name}}</p></div>
+        <div style="flex: 1"><p>${{item.product.price}}</p></div>
+        <div style="flex: 1"><p>{{item.product.quantity}}</p></div>
+      </div>
+      {% endfor %}
+      <h5>Items: {{order.get_cart_items}}</h5>
+      <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ######################################################### -->
+
+
+
+<!-- <script>
+  paypal.Buttons({
+  createOrder: function() {
+    var SETEC_URL = 'https://mystore.com/api/paypal/set-express-checkout';
+
+    return fetch(SETEC_URL, {
+      method: 'post',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(function(res) {
+      return res.json();
+    }).then(function(data) {
+      return data.token;
+    });
+  }
+}).render('#paypal-button-container');
+</script> -->
+<!-- ############################################################ -->
+<script type="text/javascript">
+  let shipping = "{{order.shipping}}";
+
+
+  if (shipping == "False") {
+    document.getElementById("shipping-info").innerHTML = "";
+  }
+
+  if (user != "AnonymousUser") {
+    document.getElementById("user-info").innerHTML = "";
+  }
+
+  if (shipping == "False" && user != "AnonymousUser") {
+    document.getElementById("form-wrapper").classList.add("hidden");
+    document.getElementById("payment-info").classList.remove("hidden");
+  }
+
+  let form = document.getElementById("form");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    document.getElementById("form-button").classList.add("hidden");
+    document.getElementById("payment-info").classList.remove("hidden");
+  });
+
+  // document
+  //   .getElementById("make-payement")
+  //   .addEventListener("click", function () {
+  //     submitFormData();
+  //   });
+
+  const submitFormData = () => {
+    let userFormData = {
+      name: null,
+      email: null,
+      total: total,
+    };
+
+    let shippingInfos = {
+      adress: null,
+      cite: null,
+      state: null,
+      zipcode: null,
+    };
+
+    if (shipping != "False") {
+      shippingInfos.address = form.address.value;
+      shippingInfos.city = form.city.value;
+      shippingInfos.state = form.state.value;
+      shippingInfos.zipcode = form.zipcode.value;
+    }
+
+    if (user == "AnonymousUser") {
+      userFormData.name = form.name.value;
+      userFormData.email = form.email.value;
+    }
+
+    // #####################################################
+    let url = "http://127.0.0.1:8000/process_order/ ";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      body: JSON.stringify({ form: userFormData, shipping: shippingInfos }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        cart = {};
+        document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
+        alert("Transaction completed");
+        window.location.href = '{% url "store" %}';
+      });
+  };
+</script>
+{% endblock content %}

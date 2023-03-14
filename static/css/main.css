@@ -1,0 +1,139 @@
+/* ################################## START NAVBAR ########################### */
+.navbar {
+    background-color: #FFFFFF;
+}
+.navbar .login {
+    all: unset;
+    border: 1px solid #231F1E;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 30px ;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-right: 20px;
+}
+.navbar .panier {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.cart-total{
+	display: block;
+	text-align: center;
+	color:#fff;
+	background-color: #003D29;
+	width: 20px;
+	height: 25px;
+	border-radius: 50%;
+	font-size: 14px;
+    font-weight: 600;
+}
+.cart-icon{
+	width:25px;
+	display: inline-block;
+	margin-left: 15px;
+}
+.navbar .panier {
+    cursor: pointer;
+}
+/* ####################################### END NAVBAR ############################################# */
+
+/* ########################################## START STORE ########################################### */
+.box-element{
+	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	background-color: #fff;
+	border-radius: 4px;
+	padding: 10px;
+}
+
+.product{
+	border-radius: 0 0 4px 4px;
+}
+
+.addProduit {
+    all: unset;
+    border: 1px solid #231F1E;
+    padding: 10px 30px ;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-right: 20px;
+    transition: all ease-in-out 400ms;
+    cursor: pointer;
+}
+.addProduit:hover {
+    background-color: #003D29;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 30px ;
+    cursor: pointer;
+}
+/* ######################################### END STORE ############################################################ */
+
+/* ############################################ START PANIER ############################################################### */
+.retourne {
+    all: unset;
+    border: 1px solid #231F1E;
+    padding: 10px 20px ;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 50px;
+    transition: all ease-in-out 400ms;
+    cursor: pointer;
+}
+.retourne:hover {
+    background-color: #003D29;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px ;
+    cursor: pointer;
+}
+.cart-row{
+	display: flex;
+    align-items: flex-stretch;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+}
+
+.quantity{
+	display: inline-block;
+	font-weight: 700;
+	padding-right:10px;
+}
+.chg-quantity{
+	width: 12px;
+	cursor: pointer;
+	display: block;
+	margin-top: 5px;
+	transition:.1s;
+}
+
+.chg-quantity:hover{
+	opacity: .6;
+}
+.row-image{
+	width: 100px;
+}
+/* ##################################################### END PANIER ################################################# */
+
+/* ###################################################### START CHECKOUT ############################################ */
+.form-field{
+	width:49%;
+	display: inline-block;
+	padding: 5px;
+}
+
+@media all and (max-width : 500px) {
+    .form-field{
+        width:100%;
+        display: inline-block;
+        padding: 5px;
+    }
+}
+
+.hidden{
+	display: none!important;
+}
